@@ -1,0 +1,25 @@
+image: gitpod/workspace-full
+
+tasks:
+  - init: |
+      npm ci
+    command: |
+      # Setup environment for Gitpod to use SQLite (no external Postgres required)
+      cp .env.example .env || true
+      # Ensure DB_USE_SQLITE is set
+      if ! grep -q "DB_USE_SQLITE" .env; then echo "DB_USE_SQLITE=true" >> .env; fi
+      # Install dependencies (again to be safe)
+      npm ci
+      # Run DB migrations and seed admin
+      npm run migrate
+      node src/models/seed.js || true
+      # Start the app
+      npm start
+
+ports:
+  - port: 4000
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint

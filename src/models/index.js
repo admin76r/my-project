@@ -2,19 +2,29 @@ const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-  host: process.env.DB_HOST || 'localhost',
-  dialect: 'postgres',
-  logging: false
-});
+let sequelize;
+
+// Support SQLite fallback for Gitpod / quick demos
+if (process.env.DB_USE_SQLITE === 'true' || process.env.DB_USE_SQLITE === '1') {
+  const storage = process.env.DB_SQLITE_FILE || path.join(__dirname, '..', 'data', 'db.sqlite');
+  // Ensure directory exists
+  fs.mkdirSync(path.dirname(storage), { recursive: true });
+  sequelize = new Sequelize({ dialect: 'sqlite', storage, logging: false });
+} else {
+  sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: 'postgres',
+    logging: false
+  });
+}
 
 const db = { sequelize, Sequelize };
 
 // load models
 fs.readdirSync(__dirname)
-  .filter(f=>f !== 'index.js' && f.endsWith('.js'))
-  .forEach(file=>{
-    const mod = require(path.join(__dirname,file))(sequelize);
+  .filter(f => f !== 'index.js' && f.endsWith('.js'))
+  .forEach(file => {
+    const mod = require(path.join(__dirname, file))(sequelize);
     db[mod.name] = mod;
   });
 
