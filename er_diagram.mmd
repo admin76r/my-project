@@ -1,0 +1,98 @@
+erDiagram
+    PATIENT {
+        UUID id PK
+        string name
+        date dob
+        string gender
+        string phone
+        string email
+        text address
+        timestamp created_at
+    }
+    USER {
+        UUID id PK
+        string username
+        string password_hash
+        string full_name
+        string email
+        UUID role_id FK
+        timestamp created_at
+    }
+    ROLE {
+        UUID id PK
+        string name
+    }
+    VISIT {
+        UUID id PK
+        UUID patient_id FK
+        string visit_number
+        timestamp visit_time
+        UUID created_by FK
+        string status
+    }
+    SAMPLE {
+        UUID id PK
+        UUID visit_id FK
+        string sample_barcode
+        timestamp collected_at
+        UUID collected_by FK
+        string status
+    }
+    TEST {
+        UUID id PK
+        string code
+        string name
+        string unit
+        string ref_range
+        decimal price
+    }
+    SAMPLE_TEST {
+        UUID id PK
+        UUID sample_id FK
+        UUID test_id FK
+        string status
+    }
+    TEST_RESULT {
+        UUID id PK
+        UUID sample_test_id FK
+        string value
+        string remarks
+        UUID entered_by FK
+        UUID verified_by FK
+        timestamp entered_at
+        timestamp verified_at
+    }
+    INVOICE {
+        UUID id PK
+        UUID visit_id FK
+        decimal total_amount
+        decimal paid_amount
+        string status
+        timestamp created_at
+    }
+    APPOINTMENT {
+        UUID id PK
+        UUID patient_id FK
+        timestamp scheduled_at
+        string purpose
+        UUID created_by FK
+        string status
+    }
+    AUDIT_LOG {
+        UUID id PK
+        string entity
+        UUID entity_id
+        string action
+        text changes
+        UUID user_id
+        timestamp created_at
+    }
+
+PATIENT ||--o{ VISIT : has
+VISIT ||--o{ SAMPLE : has
+SAMPLE ||--o{ SAMPLE_TEST : has
+TEST ||--o{ SAMPLE_TEST : part_of
+SAMPLE_TEST ||--o{ TEST_RESULT : has
+VISIT ||--o{ INVOICE : has
+PATIENT ||--o{ APPOINTMENT : schedules
+USER }|..|{ ROLE : has

@@ -1,0 +1,24 @@
+{
+  "name": "acca-diagnostic-mvp",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "migrate": "node src/models/sync.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.32.1",
+    "pg": "^8.11.0",
+    "pg-hstore": "^2.3.4",
+    "dotenv": "^16.3.1",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5",
+    "pdfkit": "^0.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

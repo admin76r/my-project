@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Receptionist Dashboard - Wireframe</title>
+<style>
+body{font-family:Arial;max-width:980px;margin:20px auto}
+.header{display:flex;justify-content:space-between;align-items:center}
+.card{border:1px solid #ddd;padding:12px;margin:8px 0}
+.grid{display:flex;gap:12px}
+.col{flex:1}
+.table{width:100%;border-collapse:collapse}
+.table td,.table th{border:1px solid #eee;padding:8px}
+</style>
+</head>
+<body>
+<div class="header">
+  <h2>Clinic Name — Reception</h2>
+  <div>Logged in as: Receptionist</div>
+</div>
+
+<div class="card">
+  <strong>Quick Actions:</strong>
+  <button>Create Patient</button>
+  <button>Create Visit / Sample</button>
+  <button>Print Barcode</button>
+  <button>View Appointments</button>
+</div>
+
+<div class="grid">
+  <div class="col card">
+    <h4>Today's Appointments</h4>
+    <table class="table">
+      <tr><th>Time</th><th>Patient</th><th>Action</th></tr>
+      <tr><td>09:30</td><td>Ravi Kumar</td><td><button>Check-in</button></td></tr>
+    </table>
+  </div>
+  <div class="col card">
+    <h4>Pending Collections</h4>
+    <table class="table">
+      <tr><th>Sample</th><th>Patient</th><th>Collector</th></tr>
+      <tr><td>SAMP-0001</td><td>Rita Sharma</td><td>Unassigned</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: ACCA Diagnostic Center API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: JWT token
+  /patients:
+    post:
+      summary: Create patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '201': { description: Created }
+    get:
+      summary: List/search patients
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+  /visits:
+    post:
+      summary: Create visit + sample(s)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient_id: { type: string }
+                tests: 
+                  type: array
+                  items: { type: string }
+      responses:
+        '201': { description: Created }
+  /samples/{id}/results:
+    post:
+      summary: Enter results for sample
+      parameters:
+        - in: path
+          name: id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  test_id: { type: string }
+                  value: { type: string }
+                  remarks: { type: string }
+      responses:
+        '200': { description: Saved }
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        name: { type: string }
+        dob: { type: string, format: date }
+        gender: { type: string }
+        phone: { type: string }
+        email: { type: string }
+        address: { type: string }
