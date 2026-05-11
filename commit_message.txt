@@ -1,0 +1,1 @@
+feat: add DB seeding script for admin user
